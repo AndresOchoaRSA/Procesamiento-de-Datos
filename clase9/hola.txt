@@ -1,0 +1,7 @@
+Aquí encuentras material sobre cómo trabajar en flexdashboard en R.
+
+### link de estudio flexdashboard
+https://rstudio.github.io/flexdashboard/
+
+### link ejemplo en clase
+https://rpubs.com/RsA_andres_8a/1444570
