@@ -1,0 +1,195 @@
+---
+title: "tablero fuga de clientes"
+author: "Andrés"
+date: "2026-06-26"
+output: 
+    flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+---
+
+```{r}
+library(ggplot2)
+library(corrplot)
+Telco_Cusomer_Churn <- read.csv("/cloud/project/Telco_Cusomer_Churn.csv", stringsAsFactors=TRUE)
+```
+
+Introducción
+================================================================================
+
+Row
+--------------------------------------------------------------------------------
+
+### Descripción de los datos.
+
+Este conjunto de datos cuenta con 7043 registros y 21 variables, donde se quiere
+analizar como se comporta la fuga de clientes.
+
+
+![](Machine_Learning.jpeg)
+
+
+
+Row
+--------------------------------------------------------------------------------
+
+Estadísticas
+
+```{r estadisticas}
+summary(Telco_Cusomer_Churn)
+```
+
+
+
+Análisis de Correlación
+================================================================================
+
+Row
+--------------------------------------------------------------------------------
+
+### Correlación
+
+
+```{r cor}
+datos = data.frame(tenure=Telco_Cusomer_Churn$tenure, MonthlyCharges=Telco_Cusomer_Churn$MonthlyCharges, TotalCharges=Telco_Cusomer_Churn$TotalCharges)
+
+corrplot(cor(na.omit(datos)), method="number")
+
+```
+
+Row
+--------------------------------------------------------------------------------
+
+### Dispersión
+
+```{r dispersión}
+datos.new = na.omit(datos)
+ggplot(datos.new, aes(x=tenure, y=TotalCharges))+
+  geom_jitter()+
+  geom_smooth(method="lm")
+```
+
+### Interpretación
+
+Se observa relación directamente proporcional entre la variable tenure y 
+TotalCharges.
+
+
+Diagramas de Cajas.
+================================================================================
+
+Row
+--------------------------------------------------------------------------------
+
+### Comparación MontlyCharges vs Fuga.
+
+```{r caja1}
+ggplot(Telco_Cusomer_Churn, aes(x=Churn, y=MonthlyCharges,fill=Churn))+
+  geom_boxplot()
+
+```
+
+Row
+--------------------------------------------------------------------------------
+
+### Comparación TotalCharges vs Fuga.
+
+```{r caja2}
+ggplot(Telco_Cusomer_Churn, aes(x=Churn, y=TotalCharges,fill=Churn))+
+  geom_boxplot()
+
+```
+
+
+Diagramas de Barras Apiladas.
+================================================================================
+
+Row
+--------------------------------------------------------------------------------
+
+### Comparación Género vs Fuga de Clientes.
+
+```{r barras1}
+ggplot(Telco_Cusomer_Churn, aes(x=gender, fill=Churn))+
+  geom_bar()
+
+```
+
+Row
+--------------------------------------------------------------------------------
+
+### Prueba chi cuadrado.
+
+```{r chiCuadrado}
+tabla1 = table(Telco_Cusomer_Churn$gender, Telco_Cusomer_Churn$Churn)
+tabla1
+
+chisq.test(tabla1)
+```
+
+
+Conclusiones
+================================================================================
+
+Row
+--------------------------------------------------------------------------------
+
+### Conclusiones
+
+
+* El género no influye en la fuga de clientes.
+* Los cargos mensuales son más altos en clientes que fuga de la compañía.
+* Existe una relación directamente proporcional entre tenure y cargos totales.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
